@@ -1,0 +1,22 @@
+{
+  "name": "office-status-bot",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tendstofortytwo/office-status-bot.git"
+  },
+  "author": "Naman Sood",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tendstofortytwo/office-status-bot/issues"
+  },
+  "homepage": "https://github.com/tendstofortytwo/office-status-bot#readme",
+  "dependencies": {
+    "discord.js": "^14.8.0"
+  }
+}
