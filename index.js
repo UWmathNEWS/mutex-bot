@@ -36,8 +36,9 @@ async function main() {
 
 		for(const [_cId, channel] of channels) {
 			if(channel.name.indexOf(machine) >= 0) {
-				if(channel.lastMessage) {
-					await channel.lastMessage.edit(`${emoji[action]}`);
+				let lastMsg = await channel.messages.fetch({ limit: 1 }).last();
+				if(lastMsg) {
+					await lastMsg.edit(`${emoji[action]}`);
 				}
 				else {
 					await channel.send(`${emoji[action]}`);
