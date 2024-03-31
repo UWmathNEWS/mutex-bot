@@ -36,7 +36,7 @@ function main() {
 
 		for(const [_cId, channel] of channels) {
 			if(channel.name.indexOf(machine) >= 0) {
-				channel.setName(`${machine}-${action}ed-${emoji[action]}`);
+				channel.setName(`${machine}-${emoji[action]}`);
 				console.log(`channel updated in ${server.name}`);
 				updated = true;
 			}
@@ -45,4 +45,5 @@ function main() {
 	if(!updated) {
 		die('could not find channel');
 	}
+	process.exit(0);
 }
