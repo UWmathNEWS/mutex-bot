@@ -45,3 +45,5 @@ Open Group Policy Editor, and go to User Configuration -> Windows Settings -> Sc
 	- Script Parameters: `<path to index.js of this repo> unlock <machine-name>`
 
 **Note** that you *must* add both the scheduled tasks and the logon/logoff scripts! Locking/unlocking an account and logging off/on are two separate things and we want the mutex state to change on both of them.
+
+To automatically lock/unlock the system on inactivity (ie. when the screen goes black), go to the Power Settings to see what the timeout period is for the screen to go black, and then add a screensaver that starts that many minutes afterwards. Make sure to enable "On resume, display logon screen" in the screensaver settings. This will make it so that the computer locks whenever it is inactive, which unlocks the mutex for others.
