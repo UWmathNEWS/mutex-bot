@@ -1,31 +1,47 @@
-# Office status bot
+# Mutex bot
 
-Monitors the light at a light sensor (that outputs a light value between 0 and 1) and sets a Discord channel name corresponding to that.
+Updates a Discord channel to reflect whether or not a user is currently logged into a Windows computer, allowing safe remote user concurrency on single-user Windows licenses.
 
 ## Setup
 
-Runs on Linux. Make sure your user is in the `dialout` group:
-
-```
-sudo usermod -a -G dialout $USER
-```
-
-Reboot computer after this change.
-
-Plug in the light sensor and make sure it outputs a luminance value between 0 and 1 (sample light sensor code for Adafruit APDS9960 in `code.py`). Figure out what serial device it outputs to (eg. `/dev/ttyACM0`). Create a file called `config.pii.js` as follows:
+Create a file called `config.pii.js` as follows:
 
 ```js
 module.exports = {
 	token: 'YOUR_DISCORD_BOT_TOKEN',
-	device: 'YOUR_DEVICE_FILENAME',
-	threshold: 0.01
 };
 ```
 
-where `threshold` is the minimum value of light at the sensor that you want to consider the office open. Can be determined experimentally with `cat /dev/ttyACM0`.
-
-Run the bot with:
+Initial setup (use git bash or command prompt or powershell):
 
 ```
-$ node index.js
+$ git clone mutex-bot
+$ cd mutex-bot 
+$ npm install
 ```
+
+Open Task Scheduler, and create a new task with the following settings:
+
+* Mutex lock task
+	- Trigger: on workstation *unlock*
+	- Action: start a program
+		- Program: path to `nodejs.exe`
+		- Arguments: `<path to index.js of this repo> lock <machine-name>`
+
+* Mutex unlock task
+	- Trigger: on workstation *lock*
+	- Action: start a program
+		- Program: path to `nodejs.exe`
+		- Arguments: `<path to index.js of this repo> unlock <machine-name>`
+
+Open Group Policy Editor, and go to User Configuration -> Windows Settings -> Scripts (Logon/Logoff).
+
+* Add a Logon script
+	- Script Name: path to `nodejs.exe`
+	- Script Parameters: `<path to index.js of this repo> lock <machine-name>`
+
+* Add a Logoff script
+	- Script Name: path to `nodejs.exe`
+	- Script Parameters: `<path to index.js of this repo> unlock <machine-name>`
+
+**Note** that you *must* add both the scheduled tasks and the logon/logoff scripts! Locking/unlocking an account and logging off/on are two separate things and we want the mutex state to change on both of them.
