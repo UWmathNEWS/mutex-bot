@@ -19,12 +19,12 @@ const client = new Client({
 
 client.login(config.token);
 
-client.once(Events.ClientReady, c => {
+client.once(Events.ClientReady, async c => {
 	console.log(`Logged in as ${c.user.tag}`);
-	main();
+	await main();
 });
 
-function main() {
+async function main() {
 	const emoji = {
 		lock: '🔒',
 		unlock: '🔓',
@@ -36,8 +36,12 @@ function main() {
 
 		for(const [_cId, channel] of channels) {
 			if(channel.name.indexOf(machine) >= 0) {
-				channel.setName(`${machine}-${emoji[action]}`);
-				console.log(`channel updated in ${server.name}`);
+				if(channel.lastMessage) {
+					await channel.lastMessage.edit(`${emoji[action]}`);
+				}
+				else {
+					await channel.send(`${emoji[action]}`);
+				}
 				updated = true;
 			}
 		}
