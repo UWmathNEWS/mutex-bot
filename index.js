@@ -29,7 +29,7 @@ function main() {
 		lock: '🔒',
 		unlock: '🔓',
 	}
-	const updated = false;
+	let updated = false;
 	const servers = client.guilds.cache;
 	for(const [_sId, server] of servers) {
 		const channels = server.channels.cache;
