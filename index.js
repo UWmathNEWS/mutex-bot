@@ -38,12 +38,10 @@ async function main() {
 			if(channel.name.indexOf(machine) >= 0) {
 				let lastMsgs = await channel.messages.fetch({ limit: 1 });
 				let lastMsg = lastMsgs.last();
-				// if(lastMsg && lastMsg.editable) {
-				//	await lastMsg.edit(`${emoji[action]}`);
-				//}
-				//else {
-					await channel.send(`${emoji[action]}`);
-				//}
+				if(lastMsg && lastMsg.deletable) {
+					await lastMsg.delete();
+				}
+				await channel.send(`${emoji[action]}`);
 				updated = true;
 			}
 		}
